@@ -3,8 +3,29 @@
 import sys
 import os
 
-pwd = os.getcwd() #To extract PWD
-_, *command = sys.argv #To Extract Input from terminal
+def terminal_arguments():
+    global pwd,command
+    pwd = os.getcwd() #To extract PWD
+    _, *command = sys.argv #To Extract Input from terminal
 
-print(command)
-print(pwd)
+def all_inputs():
+    def input_string():
+        if "-i" in command:
+            if command.count("-i") == 1:
+                if command.index("-i")+1 < len(command):
+                    global input_string
+                    input_string = command.pop(command.index("-i")+1)
+                    command.pop(command.index("-i"))
+                else:display_error("Unable to Find Input String")
+            else:display_error("Exceded Input Limit \nThe use of Only one -i is Permitted")
+        else:display_error("Unable to Find Input String")
+    
+    input_string()
+def display_error(str = "Unexpected Error Occurred"):
+    print("\033[38;5;9m"+str)
+    exit()
+
+if __name__ == "__main__":
+    terminal_arguments()
+    all_inputs()
+    print(input_string)
