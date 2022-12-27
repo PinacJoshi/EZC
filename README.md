@@ -2,8 +2,10 @@
 
 Input Options
 
--if to input from a file ###DONE
--i direct input from terminal
+-if to input from a file 
+-i direct input from terminal ###DONE
+
+Sorting Inputs (major system)
 
 Output Options
 
