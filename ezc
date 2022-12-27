@@ -9,7 +9,7 @@ def terminal_arguments():
     _, *command = sys.argv #To Extract Input from terminal
 
 def all_inputs():
-    def input_string():
+    def input_string(): #Input Funcion to check if the terminal argument contains "-i" or "-if"
         if "-i" in command:
             if command.count("-i") == 1:
                 if command.index("-i")+1 < len(command):
@@ -18,8 +18,7 @@ def all_inputs():
                     command.pop(command.index("-i"))
                 else:display_error("Unable to Find Input String")
             else:display_error("Exceded Input Limit \nThe use of Only one -i is Permitted")
-        else:display_error("Unable to Find Input String")
-    input_string()
+        else:display_error("Unable to Find Input String") #Add "-if" argument check here
 
 def display_error(str = "Unexpected Error Occurred"):
     print("\033[38;5;9m"+str)
