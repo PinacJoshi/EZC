@@ -19,8 +19,8 @@ def all_inputs():
                 else:display_error("Unable to Find Input String")
             else:display_error("Exceded Input Limit \nThe use of Only one -i is Permitted")
         else:display_error("Unable to Find Input String")
-    
     input_string()
+
 def display_error(str = "Unexpected Error Occurred"):
     print("\033[38;5;9m"+str)
     exit()
