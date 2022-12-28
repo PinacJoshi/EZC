@@ -3,28 +3,54 @@
 import sys
 import os
 
+#Define the available conversions implemented in this list DONOTMAKEFORMATTINGERROR
+convert_list = [
+    "--tohex","--fromhex"
+    "--tobinary","--frombinary"
+]
+#Define Output operation list
+output_list = ["-t"]
+
 def terminal_arguments():
     global pwd,command
     pwd = os.getcwd() #To extract PWD
     _, *command = sys.argv #To Extract Input from terminal
 
-def all_inputs():
-    def input_string(): #Input Funcion to check if the terminal argument contains "-i" or "-if"
-        if "-i" in command:
-            if command.count("-i") == 1:
-                if command.index("-i")+1 < len(command):
-                    global input_string
-                    input_string = command.pop(command.index("-i")+1)
-                    command.pop(command.index("-i"))
-                else:display_error("Unable to Find Input String")
-            else:display_error("Exceded Input Limit \nThe use of Only one -i is Permitted")
-        else:display_error("Unable to Find Input String") #Add "-if" argument check here
+def input_string(): #Input Funcion to check if the terminal argument contains "-i" or "-if"
+    if "-i" in command: #Is -i present?
+        if command.count("-i") == 1:#Is -i present only 1 time?
+            if command.index("-i")+1 < len(command):#Is conversion string present?
+                global input_string
+                input_string = command.pop(command.index("-i")+1)
+                command.pop(command.index("-i"))
+            else:display_error("Unable to Find Input String")
+        else:display_error("Exceded Input Limit \nThe use of Only one -i is Permitted")
+    else:display_error("Unable to Find Input String") #Add "-if" argument check here
+    
+def check_inputvars(): #Checks if the input vars have proper syntax
+
+    #Subtracts all the valid syntax from the command variable and assigns it to temp as a list
+    temp = list(set(command).difference(set(convert_list).union(set(output_list))))
+
+    #Checks if temp variable is empty
+    #If it is empty that means proper syntax is used
+    #If its not empty it displays an error with the wrong parameters used
+    if temp != []:
+        display_error("Unknown Parameter \"%s\"" %','.join(temp))          
 
 def display_error(str = "Unexpected Error Occurred"):
     print("\033[38;5;9m"+str)
     exit()
 
+def main():
+    terminal_arguments() #To Retrive PWD and Terminal Args
+
+    input_string() #To retrive the input method chosen by user
+    check_inputvars() #To check if the input vars have correct syntax
+
+    #Execute Input Vars with respective functions
+    for func in [_ for _ in convert_list if _ in command]:
+        locals()[func.replace("-","")]()
+
 if __name__ == "__main__":
-    terminal_arguments()
-    all_inputs()
-    print(input_string)
+    main()
