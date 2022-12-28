@@ -5,7 +5,11 @@ Input Options
 -if to input from a file 
 -i direct input from terminal ###DONE
 
-Sorting Inputs (major system)
+Sorting Inputs (major system) ###DONE
+
+Convert System
+-HEx
+-Binary
 
 Output Options
 
