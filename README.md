@@ -10,11 +10,12 @@ Sorting Inputs (major system) ###DONE
 Convert System
 -HEx
 -Binary
+-Octal
 
 Output Options
 
 -of to output to a file
--t to output to terminal (default option)
+-t to output to terminal (default option) ###Half Done
 -c to copy directly to clipboard
 
 function terminal_arguments() - to extract all initial input from terminal
