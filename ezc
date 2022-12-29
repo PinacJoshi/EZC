@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+#Imported Packages
 import sys
 import os
 
@@ -11,12 +12,16 @@ convert_list = [
 #Define Output operation list
 output_list = ["-t"]
 
-def terminal_arguments():
+def display_error(str = "Unexpected Error Occurred"): #Displays an Error Passed to func and exits the program. If no error is defined it defaults to "Unexpected Error Occurred"
+    print("\033[38;5;9m"+str)
+    exit()
+
+def terminal_arguments(): #Retrieves PWD and Parrameters Defined by 
     global pwd,command
     pwd = os.getcwd() #To extract PWD
     _, *command = sys.argv #To Extract Input from terminal
 
-def input_string(): #Input Funcion to check if the terminal argument contains "-i" or "-if"
+def input_method(): #Input Funcion to check if the terminal argument contains "-i" or "-if"
     if "-i" in command: #Is -i present?
         if command.count("-i") == 1:#Is -i present only 1 time?
             if command.index("-i")+1 < len(command):#Is conversion string present?
@@ -26,7 +31,7 @@ def input_string(): #Input Funcion to check if the terminal argument contains "-
             else:display_error("Unable to Find Input String")
         else:display_error("Exceded Input Limit \nThe use of Only one -i is Permitted")
     else:display_error("Unable to Find Input String") #Add "-if" argument check here
-    
+
 def check_inputvars(): #Checks if the input vars have proper syntax
 
     #Subtracts all the valid syntax from the command variable and assigns it to temp as a list
@@ -38,19 +43,38 @@ def check_inputvars(): #Checks if the input vars have proper syntax
     if temp != []:
         display_error("Unknown Parameter \"%s\"" %','.join(temp))          
 
-def display_error(str = "Unexpected Error Occurred"):
-    print("\033[38;5;9m"+str)
-    exit()
+def execution_formation(): #Forms the Execution Order queue to keep track of execution
+    def output_method(): #Determines which output method the user selected
+        if "-t" in command:
+            if command.count("-t") == 1 & command.count("-c") == 0 & command.count("-of") == 0:
+                return("terminal_output")
+            else: display_error("Output Option Error")
+    
+    global execution_order
+    execution_order = []
 
-def main():
+    for func in [_ for _ in convert_list if _ in command]:
+        execution_order.append(func.replace("-",""))
+
+    if output_method() != None:
+        execution_order.append(output_method)
+
+def conversion_execution(): #Executes the Conversion funcs, for which the User Calls
+
+    def tohex():
+        print()
+
+    for func in execution_order:
+        locals()[func]()
+
+def main(): #Main Function to Execute Respecticve Funcs in order
     terminal_arguments() #To Retrive PWD and Terminal Args
 
-    input_string() #To retrive the input method chosen by user
+    input_method() #To retrive the input method chosen by user
     check_inputvars() #To check if the input vars have correct syntax
-
-    #Execute Input Vars with respective functions
-    for func in [_ for _ in convert_list if _ in command]:
-        locals()[func.replace("-","")]()
+    
+    execution_formation() #To form excution order queue to keep track of which conversion will take place next
+    conversion_execution() #To execute the conversion functions formed by execution formation
 
 if __name__ == "__main__":
     main()
