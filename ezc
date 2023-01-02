@@ -6,7 +6,7 @@ import os
 
 #Define the available conversions implemented in this list DONOTMAKEFORMATTINGERROR
 convert_list = [
-    "--tohex","--fromhex"
+    "--tohex","--fromhex",
     "--tobinary","--frombinary"
 ]
 #Define Output operation list
@@ -53,19 +53,30 @@ def execution_formation(): #Forms the Execution Order queue to keep track of exe
     global execution_order
     execution_order = []
 
-    for func in [_ for _ in convert_list if _ in command]:
+    for func in [_ for _ in command if _ in convert_list]:
         execution_order.append(func.replace("-",""))
 
     if output_method() != None:
         execution_order.append(output_method)
 
-def conversion_execution(): #Executes the Conversion funcs, for which the User Calls
-
+def conversion_execution(key): #Executes the Conversion funcs, for which the User Calls
     def tohex():
-        print()
+        global input_string
+        input_string=input_string.encode().hex()
+        #store hex value in input string
+        #example: 'hello' turns into '68656c6c6f'
 
-    for func in execution_order:
-        locals()[func]()
+    def tobinary():
+        global input_string
+        input_string=''.join(format(ord(i), '08b') for i in input_string)
+        #store binary value in input string
+        #example: 'hello' turns into '0110100001100101011011000110110001101111'
+
+    locals()[key]()
+
+def print_execution(step,conversion_name):
+    print("\n"+"-"*20+"\nConversion Index - "+str(step+1)+" - "+conversion_name)
+    print(input_string+"\n"+"-"*20)
 
 def main(): #Main Function to Execute Respecticve Funcs in order
     terminal_arguments() #To Retrive PWD and Terminal Args
@@ -74,7 +85,10 @@ def main(): #Main Function to Execute Respecticve Funcs in order
     check_inputvars() #To check if the input vars have correct syntax
     
     execution_formation() #To form excution order queue to keep track of which conversion will take place next
-    conversion_execution() #To execute the conversion functions formed by execution formation
+    
+    for func in execution_order:
+        conversion_execution(func) #To execute the conversion functions formed by execution formation
+        print_execution(execution_order.index(func),func)
 
 if __name__ == "__main__":
     main()
