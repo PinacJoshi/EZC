@@ -71,7 +71,26 @@ def conversion_execution(key): #Executes the Conversion funcs, for which the Use
         input_string=''.join(format(ord(i), '08b') for i in input_string)
         #store binary value in input string
         #example: 'hello' turns into '0110100001100101011011000110110001101111'
-
+    
+    
+    def fromhex():  
+        global input_string
+        try:
+            input_string= bytes.fromhex(input_string).decode("utf-8") 
+        except:
+            #print error
+            display_error("invalid input")
+    
+    
+    
+    def frombinary():
+        global input_string
+        try:
+            input_string=''.join(chr(int(input_string[i*8:i*8+8],2)) for i in range(len(input_string)//8))
+        except:
+            display_error("invalid input")
+    
+    
     locals()[key]()
 
 def print_execution(step,conversion_name):
