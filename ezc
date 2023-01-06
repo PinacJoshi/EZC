@@ -46,7 +46,7 @@ def check_inputvars(): #Checks if the input vars have proper syntax
 def execution_formation(): #Forms the Execution Order queue to keep track of execution
     def output_method(): #Determines which output method the user selected
         if "-t" in command:
-            if command.count("-t") == 1 & command.count("-c") == 0 & command.count("-of") == 0:
+            if command.count("-t") == 1:
                 return("terminal_output")
             else: display_error("Output Option Error")
     
@@ -78,15 +78,14 @@ def conversion_execution(key): #Executes the Conversion funcs, for which the Use
             input_string= bytes.fromhex(input_string).decode("utf-8") 
         except:
             #print error
-            display_error("invalid input")
+            display_error("Unable to Convert Input")
     
     def frombinary():
         global input_string
         try:
             input_string=''.join(chr(int(input_string[i*8:i*8+8],2)) for i in range(len(input_string)//8))
         except:
-            display_error("invalid input")
-    
+            display_error("Unable to Convert Input")
     
     locals()[key]()
 
