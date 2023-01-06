@@ -72,7 +72,6 @@ def conversion_execution(key): #Executes the Conversion funcs, for which the Use
         #store binary value in input string
         #example: 'hello' turns into '0110100001100101011011000110110001101111'
     
-    
     def fromhex():  
         global input_string
         try:
@@ -80,8 +79,6 @@ def conversion_execution(key): #Executes the Conversion funcs, for which the Use
         except:
             #print error
             display_error("invalid input")
-    
-    
     
     def frombinary():
         global input_string
