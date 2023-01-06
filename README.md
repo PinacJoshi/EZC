@@ -15,7 +15,7 @@ Convert System
 Output Options
 
 -of to output to a file
--t to output to terminal (default option) ###Half Done
+-t to output to terminal (default option) ###Made the default option thus removing it from code
 -c to copy directly to clipboard
 
 function terminal_arguments() - to extract all initial input from terminal
