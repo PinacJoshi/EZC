@@ -3,6 +3,7 @@
 #Imported Packages
 import sys
 import os
+import pyperclip as pc
 
 #Define the available conversions implemented in this list DONOTMAKEFORMATTINGERROR
 convert_list = [
@@ -10,7 +11,11 @@ convert_list = [
     "--tobinary","--frombinary"
 ]
 #Define Output operation list
-output_list = ["-t"]
+output_list = [
+    # "-t", Default Option to output to terminal
+    "-s",  #Silent Option does not output to terminal
+    "-c"   #To copy to clipboard
+]
 
 def display_error(str = "Unexpected Error Occurred"): #Displays an Error Passed to func and exits the program. If no error is defined it defaults to "Unexpected Error Occurred"
     print("\033[38;5;9m"+str)
@@ -44,20 +49,23 @@ def check_inputvars(): #Checks if the input vars have proper syntax
         display_error("Unknown Parameter \"%s\"" %','.join(temp))          
 
 def execution_formation(): #Forms the Execution Order queue to keep track of execution
-    def output_method(): #Determines which output method the user selected
-        if "-t" in command:
-            if command.count("-t") == 1:
-                return("terminal_output")
-            else: display_error("Output Option Error")
-    
+   
     global execution_order
     execution_order = []
 
     for func in [_ for _ in command if _ in convert_list]:
         execution_order.append(func.replace("-",""))
 
-    if output_method() != None:
-        execution_order.append(output_method)
+    temp = [_ for _ in command if _ in output_list]
+    if set(output_list) & set(temp):
+        if len(temp) <= 2:
+            for func in temp:
+                if temp.count(func) == 1:
+                    execution_order.append(func.replace("-",""))
+                else:
+                    display_error("Too Many Output Options")
+        else:
+            display_error("Too Many Output Options")
 
 def conversion_execution(key): #Executes the Conversion funcs, for which the User Calls
     def tohex():
@@ -93,6 +101,12 @@ def print_execution(step,conversion_name):
     print("\n"+"-"*20+"\nConversion Index - "+str(step+1)+" - "+conversion_name)
     print(input_string+"\n"+"-"*20)
 
+def output_method():
+    if "c" in execution_order:
+        pc.copy(input_string.strip())
+        if "s" not in execution_order:
+            print("Copied to Clipboard")
+
 def main(): #Main Function to Execute Respecticve Funcs in order
     terminal_arguments() #To Retrive PWD and Terminal Args
 
@@ -101,9 +115,16 @@ def main(): #Main Function to Execute Respecticve Funcs in order
     
     execution_formation() #To form excution order queue to keep track of which conversion will take place next
     
-    for func in execution_order:
-        conversion_execution(func) #To execute the conversion functions formed by execution formation
-        print_execution(execution_order.index(func),func)
+    if "s" in execution_order:
+        for func in list(set(execution_order)-set([temp.replace("-","") for temp in output_list])):
+            conversion_execution(func) #To execute the conversion functions formed by execution formation
+
+    else:
+        for func in list(set(execution_order)-set([temp.replace("-","") for temp in output_list])):
+            conversion_execution(func) #To execute the conversion functions formed by execution formation
+            print_execution(execution_order.index(func),func)
+    
+    output_method()
 
 if __name__ == "__main__":
     main()
