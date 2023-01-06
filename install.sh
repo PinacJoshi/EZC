@@ -8,7 +8,7 @@ fi
 
 echo -e "\e[1;32m * Installing EZC"
 
-# sudo chmod +x ezc     #Remove Comment After Development is Completed
-# sudo cp ezc /usr/bin/ #Remove Comment After Development is Completed
+sudo chmod +x ezc     #Remove Comment After Development is Completed
+sudo cp ezc /usr/bin/ #Remove Comment After Development is Completed
 
 echo -e "\e[1;32m * EZC Installation Completed"
