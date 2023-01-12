@@ -115,12 +115,15 @@ def main(): #Main Function to Execute Respecticve Funcs in order
     
     execution_formation() #To form excution order queue to keep track of which conversion will take place next
     
+    #this line fixes everything
+    t1 = [x for x in execution_order if x not in [temp.replace("-","") for temp in output_list]]
+    
     if "s" in execution_order:
-        for func in list(set(execution_order)-set([temp.replace("-","") for temp in output_list])):
+        for func in t1:
             conversion_execution(func) #To execute the conversion functions formed by execution formation
 
     else:
-        for func in list(set(execution_order)-set([temp.replace("-","") for temp in output_list])):
+        for func in t1:
             conversion_execution(func) #To execute the conversion functions formed by execution formation
             print_execution(execution_order.index(func),func)
     
