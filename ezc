@@ -98,8 +98,8 @@ def conversion_execution(key): #Executes the Conversion funcs, for which the Use
     locals()[key]()
 
 def print_execution(step,conversion_name):
-    print("\n"+"-"*20+"\nConversion Index - "+str(step)+" - "+conversion_name)
-    print(input_string+"\n"+"-"*20)
+    print("\nConversion Index - "+str(step)+" - "+conversion_name)
+    print(input_string)
 
 def output_method():
     if "c" in execution_order:
