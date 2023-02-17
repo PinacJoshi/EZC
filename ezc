@@ -4,12 +4,16 @@
 import sys
 import os
 import pyperclip as pc
+import hashlib
 
 #Define the available conversions implemented in this list DONOTMAKEFORMATTINGERROR
 convert_list = [
     "--tohex","--fromhex",
-    "--tobinary","--frombinary"
-]
+    "--tobinary","--frombinary",
+    "--sha256","--md5",
+    "--torot13", "--fromrot13",
+    "--removeSpace", "--toUpper",
+    "--toLower"]
 #Define Output operation list
 output_list = [
     # "-t", Default Option to output to terminal
@@ -94,7 +98,73 @@ def conversion_execution(key): #Executes the Conversion funcs, for which the Use
             input_string=''.join(chr(int(input_string[i*8:i*8+8],2)) for i in range(len(input_string)//8))
         except:
             display_error("Unable to Convert Input")
+    def sha256():
+        global input_string
+        try:
+            input_string=hashlib.sha256(bytes(input_string,'utf-8')).hexdigest()
+        except:
+            display_error("unable to generate sha256")
+
+    def md5():
+        global input_string
+        try:
+            input_string=hashlib.md5(bytes(input_string,'utf-8')).hexdigest()
+        except:
+            display_error("unable to generate md5")    
+
+    def torot13():
+        global input_string
+        input_string=input_string.lower()
+        temp=''
+        try:
+            for char in input_string:
+                if char.isalpha():
+                    num=ord(char)+13
+                    if(num<=ord('z')):
+                        temp+=chr(num)
+                    else:
+                        diff=num-ord('z')
+                        temp+=chr(diff+ord('a')-1)
+                else:
+                    raise Exception("invalid")
+            input_string=temp
+        except:
+            display_error("something went wrong")
+
+    def fromrot13():
+        global input_string
+        input_string=input_string.lower()
+        temp=''
+        try:
+            for char in input_string:
+                if char.isalpha():
+                    num=ord(char)-13
+                    if(num>=ord('a')):
+                        temp+=chr(num)
+                    else:
+                        diff=ord('a')-num
+                        temp+=chr(ord('z')-diff+1)
+                else:
+                    raise Exception("invalid")
+            input_string=temp
+        except:
+            display_error("something went wrong")
+
+        #minus 13
+        #if the ord is smaller than ord 'a'
+        #take the abs diff. subtract it with ord 'z
+    def removeSpace():
+        global input_string
+        input_string="".join(input_string.split())
     
+    def toUpper():
+        global input_string
+        input_string=input_string.upper()
+    
+    def toLower():
+        global input_string
+        input_string=input_string.lower()
+  
     locals()[key]()
 
 def print_execution(step,conversion_name):
