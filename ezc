@@ -98,7 +98,7 @@ def conversion_execution(key): #Executes the Conversion funcs, for which the Use
     locals()[key]()
 
 def print_execution(step,conversion_name):
-    print("\n"+"-"*20+"\nConversion Index - "+str(step+1)+" - "+conversion_name)
+    print("\n"+"-"*20+"\nConversion Index - "+str(step)+" - "+conversion_name)
     print(input_string+"\n"+"-"*20)
 
 def output_method():
@@ -117,15 +117,17 @@ def main(): #Main Function to Execute Respecticve Funcs in order
     
     #this line fixes everything
     t1 = [x for x in execution_order if x not in [temp.replace("-","") for temp in output_list]]
-    
+
     if "s" in execution_order:
         for func in t1:
             conversion_execution(func) #To execute the conversion functions formed by execution formation
 
     else:
+        step=0
         for func in t1:
+            step+=1
             conversion_execution(func) #To execute the conversion functions formed by execution formation
-            print_execution(execution_order.index(func),func)
+            print_execution(step,func)
     
     output_method()
 
